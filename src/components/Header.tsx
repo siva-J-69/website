@@ -109,7 +109,20 @@ export function Header({ open, onOpenChange }: HeaderProps) {
   return (
     <header className={`site-header${scrolled ? ' is-scrolled' : ''}${open ? ' is-menu-open' : ''}`}>
       <div className="wrap header-bar">
-        <a className="brand" href="#top">
+        <a
+          className="brand"
+          href="/"
+          onClick={(event) => {
+            event.preventDefault()
+            onOpenChange(false)
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
+            const clean = `${window.location.pathname}${window.location.search}`
+            if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== clean) {
+              window.history.replaceState(null, '', clean)
+            }
+          }}
+        >
           <span className="brand-mark">{siteConfig.wordmark}</span>
           <span className="brand-sub">{siteConfig.descriptor}</span>
         </a>

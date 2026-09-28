@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { About } from './components/About'
 import { Contact } from './components/Contact'
 import { Customisation } from './components/Customisation'
@@ -21,6 +21,11 @@ export default function App() {
   const [preview, setPreview] = useState<PreviewChoice>(defaultPreview)
 
   useReveal(mainRef)
+
+  useEffect(() => {
+    if (window.location.hash !== '#top') return
+    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
+  }, [])
 
   const enquire = (productId: string) => {
     setCategory(productId)
