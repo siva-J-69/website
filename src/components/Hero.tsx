@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { StudioComposition } from './art/PackagingArt'
+import { hero } from '../data/content'
 import { gsap, useGSAP } from '../gsap'
 
 export function Hero() {
@@ -32,21 +32,18 @@ export function Hero() {
     <section className="hero" id="top" aria-labelledby="hero-title">
       <div className="wrap hero-grid">
         <div className="hero-copy">
-          <p className="eyebrow">Jewellery packaging • Bulk orders • Wholesale supply</p>
+          <p className="eyebrow">{hero.eyebrow}</p>
           <h1 id="hero-title">
-            <span>Beautiful packaging.</span>
-            <span>Made for your business.</span>
+            <span>{hero.title[0]}</span>
+            <span>{hero.title[1]}</span>
           </h1>
-          <p className="lede">
-            Explore jewellery boxes and bags for your store or brand. Share your requirements
-            and quantity to request wholesale pricing.
-          </p>
+          <p className="lede">{hero.lede}</p>
           <div className="hero-actions">
             <a className="btn btn-primary" href="#range">
               Explore Our Range
             </a>
             <a className="btn btn-secondary" href="#contact">
-              Get a Bulk Quote
+              Get a Wholesale Quote
             </a>
           </div>
         </div>
@@ -55,10 +52,18 @@ export function Hero() {
           <span className="crop crop-tr" aria-hidden="true" />
           <span className="crop crop-bl" aria-hidden="true" />
           <span className="crop crop-br" aria-hidden="true" />
-          <div className="hero-art-frame" role="img" aria-label="Illustrative arrangement of jewellery boxes in three sizes with a matching carry bag">
-            <StudioComposition />
-          </div>
-          <p className="hero-caption">Illustrative composition</p>
+          <picture>
+            <source media="(min-width: 800px)" srcSet="/assets/siva/hero-desktop.webp" />
+            <img
+              src="/assets/siva/hero-mobile.webp"
+              alt={hero.imageAlt}
+              width={1122}
+              height={1402}
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
+          <p className="hero-caption">{hero.caption}</p>
         </div>
       </div>
       <p className="watermark" aria-hidden="true">

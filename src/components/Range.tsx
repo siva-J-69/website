@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { products, type ProductCategory } from '../data/products'
-import { ProductArt } from './art/PackagingArt'
 
 const filters: { id: 'all' | ProductCategory; label: string }[] = [
-  { id: 'all', label: 'All' },
-  { id: 'boxes', label: 'Boxes' },
-  { id: 'bags', label: 'Bags & Pouches' },
+  { id: 'all', label: 'All packaging' },
+  { id: 'boxes', label: 'Jewellery boxes' },
+  { id: 'bags', label: 'Bags & pouches' },
 ]
 
 type RangeProps = {
@@ -23,12 +22,12 @@ export function Range({ onEnquire }: RangeProps) {
       </div>
       <div className="wrap">
         <header className="section-heading">
-          <p className="eyebrow">Our range</p>
-          <h2 id="range-title">Find the right packaging for every piece.</h2>
+          <p className="eyebrow">Jewellery packaging range</p>
+          <h2 id="range-title">Jewellery boxes, pouches, and carry bags.</h2>
           <p className="lede">
-            These studies show the kinds of jewellery boxes and bags the business manufactures
-            for bulk orders. They are illustrative until a verified catalogue, with confirmed
-            specifications, is supplied.
+            These photographs show jewellery boxes, zip pouches, and carry bags you can discuss
+            for a bulk order. Finish, fit, and availability are confirmed with the business
+            before an order.
           </p>
         </header>
 
@@ -46,28 +45,23 @@ export function Range({ onEnquire }: RangeProps) {
           ))}
         </div>
         <p className="filter-count" aria-live="polite">
-          Showing {visible.length} {visible.length === 1 ? 'study' : 'studies'}
+          Showing {visible.length} {visible.length === 1 ? 'piece' : 'pieces'}
         </p>
 
         <div className="product-grid" id="product-grid">
           {visible.map((product) => (
             <article className="card" key={product.id}>
               <div className="card-art">
-                {product.image ? (
-                  <img
-                    src={product.image}
-                    alt={product.imageAlt ?? ''}
-                    width={800}
-                    height={980}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                ) : (
-                  <div role="img" aria-label={`Illustrative drawing of ${product.name.toLowerCase()}`}>
-                    <ProductArt kind={product.art} />
-                  </div>
-                )}
-                {product.illustrative ? <p className="illus">Illustrative</p> : null}
+                <img
+                  src={product.image}
+                  srcSet={product.srcSet}
+                  sizes="(min-width: 1024px) 360px, (min-width: 700px) 45vw, 90vw"
+                  alt={product.imageAlt}
+                  width={product.width}
+                  height={product.height}
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
               <p className="card-kicker">{product.categoryLabel}</p>
               <h3>{product.name}</h3>

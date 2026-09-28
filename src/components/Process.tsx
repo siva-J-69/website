@@ -36,10 +36,11 @@ export function Process() {
       <div className="wrap">
         <header className="section-heading">
           <p className="eyebrow">How to order</p>
-          <h2 id="process-title">From the first look to a confirmed order.</h2>
+          <h2 id="process-title">How a bulk packaging order works.</h2>
           <p className="lede">
-            A bulk order starts with a conversation. Delivery dates and production times are not
-            listed here — they are discussed when the order is agreed.
+            A wholesale order for jewellery boxes or bags starts with a conversation. Delivery
+            dates and production times are not listed here — they are discussed when the order
+            is agreed.
           </p>
         </header>
         <div className="steps-wrap">

@@ -46,7 +46,7 @@ export function StickyQuote({ menuOpen }: StickyQuoteProps) {
 
   return (
     <a className="btn btn-primary sticky-quote" href="#contact">
-      Get a Bulk Quote
+      Get a Wholesale Quote
     </a>
   )
 }

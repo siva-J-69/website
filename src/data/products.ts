@@ -10,8 +10,7 @@ export type ArtKind =
   | 'bag'
 
 /**
- * Illustrative catalogue.
- * Replace names, copy, and `image` paths when the business supplies verified products.
+ * Catalogue photographs from the supplied asset pack.
  * Do not add prices, stock levels, dimensions, or minimum order quantities here
  * unless they have been confirmed by the business.
  */
@@ -22,84 +21,109 @@ export type Product = {
   categoryLabel: string
   description: string
   useCase: string
-  illustrative: boolean
-  art: ArtKind
-  /** Public path to a verified photograph, for example "/products/ring-box.jpg". */
-  image?: string
-  imageAlt?: string
+  image: string
+  srcSet: string
+  imageAlt: string
+  width: number
+  height: number
 }
 
+const srcSetFor = (file: string) =>
+  `/assets/siva/${file}-320.webp 320w, /assets/siva/${file}-640.webp 640w, /assets/siva/${file}.webp 1254w`
+
+const photo = (
+  file: string,
+  product: Omit<Product, 'image' | 'srcSet' | 'width' | 'height'>,
+): Product => ({
+  ...product,
+  image: `/assets/siva/${file}.webp`,
+  srcSet: srcSetFor(file),
+  width: 1254,
+  height: 1254,
+})
+
 export const products: Product[] = [
-  {
-    id: 'ring-boxes',
-    name: 'Ring boxes',
+  photo('navy-peacock-small-box', {
+    id: 'navy-peacock-small-box',
+    name: 'Navy Peacock Small Box',
     category: 'boxes',
-    categoryLabel: 'Boxes',
-    description: 'A compact box for presenting a single ring.',
-    useCase: 'For shops packing individual rings.',
-    illustrative: true,
-    art: 'ring',
-  },
-  {
-    id: 'earring-boxes',
-    name: 'Earring boxes',
+    categoryLabel: 'Jewellery boxes',
+    description: 'A small navy jewellery box with a gold peacock feather and corner accents.',
+    useCase: 'For a ring or another small piece.',
+    imageAlt: 'Small textured navy jewellery box with a gold peacock feather and corner accents.',
+  }),
+  photo('peacock-box-rose', {
+    id: 'peacock-box-rose',
+    name: 'Peacock Box — Rose',
     category: 'boxes',
-    categoryLabel: 'Boxes',
-    description: 'A low box suited to a pair of earrings.',
-    useCase: 'For counters where earrings are packed as a pair.',
-    illustrative: true,
-    art: 'earring',
-  },
-  {
-    id: 'pendant-boxes',
-    name: 'Pendant boxes',
+    categoryLabel: 'Jewellery boxes',
+    description: 'A rose jewellery box with a gold peacock-feather motif and corner brackets.',
+    useCase: 'For a compact presentation in a lighter colour.',
+    imageAlt: 'Rose pink jewellery packaging with a gold peacock-feather motif and four corner brackets.',
+  }),
+  photo('peacock-box-charcoal', {
+    id: 'peacock-box-charcoal',
+    name: 'Peacock Box — Charcoal',
     category: 'boxes',
-    categoryLabel: 'Boxes',
-    description: 'A taller box for a pendant and its chain.',
-    useCase: 'For pendant orders that need a little more height.',
-    illustrative: true,
-    art: 'pendant',
-  },
-  {
-    id: 'bangle-boxes',
-    name: 'Bangle boxes',
+    categoryLabel: 'Jewellery boxes',
+    description: 'A charcoal jewellery box with a gold peacock-feather motif and corner brackets.',
+    useCase: 'For a compact, darker presentation.',
+    imageAlt: 'Charcoal jewellery packaging with a gold peacock-feather motif and four corner brackets.',
+  }),
+  photo('bangle-box', {
+    id: 'bangle-box',
+    name: 'Bangle Box',
     category: 'boxes',
-    categoryLabel: 'Boxes',
-    description: 'A wider box for bangles and similar circular pieces.',
-    useCase: 'For retailers packing pieces that need a broader fit.',
-    illustrative: true,
-    art: 'bangle',
-  },
-  {
-    id: 'set-boxes',
-    name: 'Necklace and jewellery set boxes',
+    categoryLabel: 'Jewellery boxes',
+    description: 'An open burgundy jewellery box with two cream circular holders for bangles.',
+    useCase: 'For a pair of bangles or similar circular pieces.',
+    imageAlt: 'Open burgundy bangle box with two cream circular holders.',
+  }),
+  photo('burgundy-gold-long-box', {
+    id: 'burgundy-gold-long-box',
+    name: 'Burgundy and Gold Long Box',
     category: 'boxes',
-    categoryLabel: 'Boxes',
-    description: 'A larger box for a necklace or a small set of pieces.',
-    useCase: 'For bridal sets, gifting, and multi-piece presentations.',
-    illustrative: true,
-    art: 'set',
-  },
-  {
-    id: 'pouches',
-    name: 'Jewellery pouches',
+    categoryLabel: 'Jewellery boxes',
+    description: 'A slim burgundy jewellery case with gold sides and a pale centre stripe.',
+    useCase: 'For a bracelet, chain, or another slim piece.',
+    imageAlt: 'Slim burgundy jewellery case with gold sides and a pale metallic centre stripe.',
+  }),
+  photo('striped-long-box', {
+    id: 'striped-long-box',
+    name: 'Blue and Ivory Long Box',
+    category: 'boxes',
+    categoryLabel: 'Jewellery boxes',
+    description: 'A slim royal blue jewellery case with a broad ivory stripe.',
+    useCase: 'For a bracelet, chain, or another slim piece.',
+    imageAlt: 'Slim royal blue jewellery case with a broad ivory stripe.',
+  }),
+  photo('necklace-set-box', {
+    id: 'necklace-set-box',
+    name: 'Necklace Set Box',
+    category: 'boxes',
+    categoryLabel: 'Jewellery boxes',
+    description: 'An open wine-coloured jewellery box with a necklace pad and earring places.',
+    useCase: 'For a necklace presented with earrings.',
+    imageAlt: 'Open wine-coloured jewellery set box with cream necklace and earring inserts.',
+  }),
+  photo('gold-branch-zip-pouch', {
+    id: 'gold-branch-zip-pouch',
+    name: 'Gold Branch Zip Pouch',
     category: 'bags',
-    categoryLabel: 'Bags & Pouches',
-    description: 'A soft pouch for jewellery that does not need a rigid box.',
-    useCase: 'For lightweight packing and a simpler presentation.',
-    illustrative: true,
-    art: 'pouch',
-  },
-  {
-    id: 'carry-bags',
-    name: 'Jewellery carry bags',
+    categoryLabel: 'Jewellery bags & pouches',
+    description: 'A rounded ivory jewellery pouch with a gold branch pattern and a brown zipper.',
+    useCase: 'For jewellery that does not need a rigid box.',
+    imageAlt: 'Rounded ivory zip pouch with a gold branch pattern and a brown zipper.',
+  }),
+  photo('gold-leaf-carry-bag', {
+    id: 'gold-leaf-carry-bag',
+    name: 'Gold Leaf Carry Bag',
     category: 'bags',
-    categoryLabel: 'Bags & Pouches',
-    description: 'A carry bag that can be coordinated with the boxes.',
+    categoryLabel: 'Jewellery bags & pouches',
+    description: 'An ivory jewellery carry bag with a gold leaf pattern, brown handles, and a brown patch.',
     useCase: 'For handing a purchase to a customer at the counter.',
-    illustrative: true,
-    art: 'bag',
-  },
+    imageAlt: 'Ivory carry bag with a gold leaf pattern, brown handles and a brown top patch.',
+  }),
 ]
 
 export const enquiryCategories = [

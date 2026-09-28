@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { About } from './components/About'
 import { Contact } from './components/Contact'
 import { Customisation } from './components/Customisation'
+import { Demo } from './components/Demo'
 import { Faq } from './components/Faq'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
@@ -43,6 +44,7 @@ export default function App() {
         <Hero />
         <Story />
         <Range onEnquire={enquire} />
+        <Demo />
         <Customisation preview={preview} onChange={setPreview} />
         <About />
         <Process />

@@ -1,0 +1,20 @@
+{
+  "name": "Siva Jewellery Box & Bag Centre",
+  "short_name": "Siva",
+  "description": "Wholesale jewellery boxes, pouches, and carry bags for shops, brands, and wholesalers.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "background_color": "#F7F3EB",
+  "theme_color": "#F7F3EB",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

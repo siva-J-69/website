@@ -1,6 +1,7 @@
 import { useId, useRef, useState, type FormEvent } from 'react'
 import { enquiryCategories, type PreviewChoice } from '../data/products'
-import { hasEnquiryEndpoint, hasWhatsapp, siteConfig } from '../data/site'
+import { hasEnquiryEndpoint, hasPublicContact, hasWhatsapp, siteConfig } from '../data/site'
+import { BusinessDetails } from './BusinessDetails'
 import {
   buildEnquirySummary,
   emptyEnquiry,
@@ -63,17 +64,23 @@ export function Contact({ category, onCategoryChange, preview }: ContactProps) {
   const submitToEndpoint = async () => {
     setStatus({ type: 'submitting' })
     try {
+      const payload = enquiryPayload(current, preview)
       const response = await fetch(siteConfig.enquiryEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(enquiryPayload(current, preview)),
+        body: JSON.stringify({
+          ...payload,
+          preview: `${payload.preview.kind}, ${payload.preview.colour}, sample brand text “${payload.preview.brandText || 'None'}”`,
+          _subject: `New enquiry — ${payload.businessName}`,
+          _template: 'table',
+          _captcha: 'false',
+          ...(payload.email ? { _replyto: payload.email } : {}),
+        }),
         signal: AbortSignal.timeout(15000),
       })
-      if (!response.ok) {
-        setStatus({ type: 'endpoint-error' })
-        return
-      }
-      setStatus({ type: 'success' })
+      const data = (await response.json().catch(() => null)) as { success?: string | boolean } | null
+      const accepted = response.ok && data?.success !== 'false' && data?.success !== false
+      setStatus({ type: accepted ? 'success' : 'endpoint-error' })
     } catch {
       setStatus({ type: 'endpoint-error' })
     }
@@ -124,14 +131,31 @@ export function Contact({ category, onCategoryChange, preview }: ContactProps) {
         Enquire
       </div>
       <div className="wrap contact-grid">
-        <header className="section-heading">
-          <p className="eyebrow">Contact</p>
-          <h2 id="contact-title">Let’s discuss your next bulk order.</h2>
-          <p className="lede">
-            Tell us what you need and the quantity you have in mind. Wholesale pricing is
-            confirmed from those details. It is not listed on this page.
-          </p>
-          <ContactDetails />
+        <header className="contact-intro">
+          <div>
+            <p className="eyebrow">Contact</p>
+            <h2 id="contact-title">Request a wholesale quotation.</h2>
+            <p className="lede">
+              Tell Siva Jewellery Box & Bag Centre which jewellery boxes, pouches, or bags you
+              need, and the quantity you have in mind. Wholesale pricing is confirmed from those
+              details. It is not listed on this page.
+            </p>
+            {hasPublicContact() ? <BusinessDetails listClassName="contact-details" /> : null}
+          </div>
+          <ol className="contact-points">
+            <li>
+              <span>01</span>
+              The product and an approximate quantity
+            </li>
+            <li>
+              <span>02</span>
+              Your city or delivery location
+            </li>
+            <li>
+              <span>03</span>
+              Colour, material, or printing, if you need them
+            </li>
+          </ol>
         </header>
 
         <form ref={formRef} className="form-card" onSubmit={onSubmit} noValidate>
@@ -207,7 +231,7 @@ export function Contact({ category, onCategoryChange, preview }: ContactProps) {
               />
             ))}
 
-            <label className="field field-wide" htmlFor={`${formId}-customisation`}>
+            <label className="field" htmlFor={`${formId}-customisation`}>
               <span>Customisation requirements</span>
               <textarea
                 id={`${formId}-customisation`}
@@ -219,7 +243,7 @@ export function Contact({ category, onCategoryChange, preview }: ContactProps) {
               <span className="error" />
             </label>
 
-            <label className="field field-wide" htmlFor={`${formId}-message`}>
+            <label className="field" htmlFor={`${formId}-message`}>
               <span>Additional message</span>
               <textarea
                 id={`${formId}-message`}
@@ -322,58 +346,6 @@ function Field({
         {error ?? ''}
       </span>
     </label>
-  )
-}
-
-function ContactDetails() {
-  const phone = siteConfig.phoneDisplay.trim() !== '' && siteConfig.phoneHref.trim().toLowerCase().startsWith('tel:')
-  const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(siteConfig.email.trim())
-  const address = siteConfig.address.trim()
-  const hours = siteConfig.hours.trim()
-  const map = /^https:\/\/\S+$/i.test(siteConfig.mapUrl.trim())
-  const social = siteConfig.social.filter((item) => item.href.trim() && item.label.trim())
-  const whatsapp = hasWhatsapp()
-
-  if (!phone && !email && !address && !hours && !map && social.length === 0 && !whatsapp) {
-    return null
-  }
-
-  return (
-    <ul className="contact-details">
-      {phone ? (
-        <li>
-          <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
-        </li>
-      ) : null}
-      {whatsapp ? (
-        <li>
-          <a href={`https://wa.me/${siteConfig.whatsappNumber}`} target="_blank" rel="noreferrer">
-            WhatsApp
-          </a>
-        </li>
-      ) : null}
-      {email ? (
-        <li>
-          <a href={`mailto:${siteConfig.email.trim()}`}>{siteConfig.email.trim()}</a>
-        </li>
-      ) : null}
-      {address ? <li>{address}</li> : null}
-      {hours ? <li>{hours}</li> : null}
-      {map ? (
-        <li>
-          <a href={siteConfig.mapUrl} target="_blank" rel="noreferrer">
-            View map
-          </a>
-        </li>
-      ) : null}
-      {social.map((item) => (
-        <li key={item.href}>
-          <a href={item.href} target="_blank" rel="noreferrer">
-            {item.label}
-          </a>
-        </li>
-      ))}
-    </ul>
   )
 }
 

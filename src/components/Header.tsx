@@ -3,6 +3,7 @@ import { siteConfig } from '../data/site'
 
 const links = [
   { href: '#range', id: 'range', label: 'Our Range' },
+  { href: '#demo', id: 'demo', label: 'Demos' },
   { href: '#customisation', id: 'customisation', label: 'Customisation' },
   { href: '#about', id: 'about', label: 'About Us' },
   { href: '#process', id: 'process', label: 'How to Order' },
@@ -146,12 +147,12 @@ export function Header({ open, onOpenChange }: HeaderProps) {
             ))}
           </ul>
           <a className="btn btn-primary nav-cta" href="#contact" onClick={() => onOpenChange(false)}>
-            Get a Bulk Quote
+            Get a Wholesale Quote
           </a>
         </nav>
 
         <a className="btn btn-primary header-cta" href="#contact">
-          Get a Bulk Quote
+          Get a Wholesale Quote
         </a>
       </div>
     </header>

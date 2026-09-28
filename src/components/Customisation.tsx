@@ -1,7 +1,37 @@
 import { customisationPoints } from '../data/content'
 import { palettes } from '../data/palette'
-import { PreviewArt } from './art/PackagingArt'
 import type { ColourId, PreviewChoice } from '../data/products'
+
+const previewPhotos: Record<PreviewChoice['kind'], Record<ColourId, { src: string; alt: string }>> = {
+  box: {
+    burgundy: {
+      src: '/assets/siva/bangle-box.webp',
+      alt: 'Open burgundy bangle box with two cream circular holders.',
+    },
+    ivory: {
+      src: '/assets/siva/striped-long-box.webp',
+      alt: 'Slim royal blue jewellery case with a broad ivory stripe.',
+    },
+    champagne: {
+      src: '/assets/siva/burgundy-gold-long-box.webp',
+      alt: 'Slim burgundy jewellery case with gold sides and a pale metallic centre stripe.',
+    },
+  },
+  bag: {
+    burgundy: {
+      src: '/assets/siva/gold-leaf-carry-bag.webp',
+      alt: 'Ivory carry bag with a gold leaf pattern, brown handles and a brown top patch.',
+    },
+    ivory: {
+      src: '/assets/siva/gold-branch-zip-pouch.webp',
+      alt: 'Rounded ivory zip pouch with a gold branch pattern and a brown zipper.',
+    },
+    champagne: {
+      src: '/assets/siva/gold-leaf-carry-bag.webp',
+      alt: 'Ivory carry bag with a gold leaf pattern, brown handles and a brown top patch.',
+    },
+  },
+}
 
 const colours: ColourId[] = ['burgundy', 'ivory', 'champagne']
 
@@ -16,11 +46,12 @@ export function Customisation({ preview, onChange }: CustomisationProps) {
       <section className="section section-beige" id="customisation" aria-labelledby="custom-title">
         <div className="wrap custom-grid">
           <header className="section-heading">
-            <p className="eyebrow">Customisation</p>
-            <h2 id="custom-title">Tell us how you want your packaging.</h2>
+            <p className="eyebrow">Custom jewellery packaging</p>
+            <h2 id="custom-title">Logo, colour, size, and material.</h2>
             <p className="lede">
-              Buyers usually discuss the points below before a quotation is prepared. Every
-              option is subject to confirmation.
+              Custom jewellery boxes and bags usually start with the points below. Logo
+              printing, colours, and finishes are discussed in the enquiry and confirmed before
+              a wholesale quotation.
             </p>
           </header>
           <ol className="option-list">
@@ -82,12 +113,16 @@ export function Customisation({ preview, onChange }: CustomisationProps) {
               </p>
             </div>
             <div className="preview-stage">
-              <PreviewArt
-                kind={preview.kind}
-                colour={preview.colour}
-                brandText={preview.brandText}
+              <img
+                src={previewPhotos[preview.kind][preview.colour].src}
+                alt={previewPhotos[preview.kind][preview.colour].alt}
+                width={1254}
+                height={1254}
               />
-              <p className="hero-caption">Illustrative preview</p>
+              {preview.brandText.trim() ? (
+                <p className="preview-brand">{preview.brandText}</p>
+              ) : null}
+              <p className="hero-caption">Related style, not a confirmed colour</p>
             </div>
           </div>
         </div>
@@ -97,14 +132,14 @@ export function Customisation({ preview, onChange }: CustomisationProps) {
         <div className="wrap wholesale-grid">
           <div>
             <p className="eyebrow">Wholesale</p>
-            <h2 id="wholesale-title">Ordering in quantity? Let’s discuss your requirements.</h2>
+            <h2 id="wholesale-title">Wholesale pricing for quantity orders.</h2>
           </div>
           <div>
             <p>
-              Wholesale quotations depend on the product type, quantity, dimensions, materials,
-              and any printing. Orders placed in quantity may qualify for wholesale discounts.
-              Rates and discount tiers are not published here — they are confirmed when your
-              requirements are clear.
+              A wholesale quotation for jewellery boxes, pouches, or carry bags depends on the
+              product type, quantity, dimensions, materials, and any logo printing. Orders
+              placed in quantity may qualify for wholesale discounts. Rates and discount tiers
+              are not published here — they are confirmed when your requirements are clear.
             </p>
             <a className="btn btn-light" href="#contact">
               Request Wholesale Pricing

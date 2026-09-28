@@ -10,10 +10,10 @@ export function Faq() {
       <div className="wrap faq-layout">
         <header className="section-heading">
           <p className="eyebrow">Questions</p>
-          <h2 id="faq-title">Before you send an enquiry.</h2>
+          <h2 id="faq-title">Questions about wholesale jewellery packaging.</h2>
           <p className="lede">
-            Where a detail has not been published, the business will confirm it with you
-            directly.
+            Answers cover bulk orders, custom logo printing, and wholesale pricing. Where a
+            detail has not been published, the business will confirm it with you directly.
           </p>
         </header>
         <div className="faq-list">

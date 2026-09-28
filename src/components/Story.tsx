@@ -1,17 +1,6 @@
 import { useRef } from 'react'
 import { storyChapters } from '../data/content'
-import {
-  ClosedStudy,
-  CollectionStudy,
-  OpenStudy,
-} from './art/PackagingArt'
 import { gsap, ScrollTrigger, useGSAP } from '../gsap'
-
-const frames = {
-  closed: ClosedStudy,
-  open: OpenStudy,
-  group: CollectionStudy,
-}
 
 export function Story() {
   const rootRef = useRef<HTMLElement>(null)
@@ -30,7 +19,6 @@ export function Story() {
         const chapters = gsap.utils.toArray<HTMLElement>('.story-chapter', root)
         const scenes = gsap.utils.toArray<HTMLElement>('.story-frame', root)
         const dots = gsap.utils.toArray<HTMLElement>('.story-dot', root)
-        const lid = root.querySelector('.story-lid')
         let current = 0
 
         const setChapter = (index: number) => {
@@ -66,9 +54,6 @@ export function Story() {
           },
         })
 
-        if (lid) {
-          timeline.to(lid, { y: -28, duration: 0.2, force3D: false }, 0.14)
-        }
         timeline.to(scenes[0], { opacity: 0, duration: 0.16 }, 0.24)
         timeline.to(scenes[1], { opacity: 1, duration: 0.16 }, 0.24)
         timeline.to(chapters[0], { opacity: 0, duration: 0.12 }, 0.22)
@@ -123,29 +108,38 @@ export function Story() {
         </div>
         <div className="story-layout wrap">
         <div className="story-stage" aria-hidden="true">
-          {storyChapters.map((chapter) => {
-            const Frame = frames[chapter.art]
-            return (
-              <div className={`story-frame story-frame-${chapter.art}`} key={chapter.number}>
-                {chapter.art === 'closed' ? <ClosedStudy animateLid /> : <Frame />}
-              </div>
-            )
-          })}
+          {storyChapters.map((chapter) => (
+            <div className="story-frame" key={chapter.number}>
+              <img
+                src={chapter.image}
+                alt=""
+                width={chapter.width}
+                height={chapter.height}
+                decoding="async"
+                onLoad={() => ScrollTrigger.refresh()}
+              />
+            </div>
+          ))}
         </div>
         <div className="story-copy">
           <p className="eyebrow">The presentation</p>
           <h2 id="story-title">A beautiful presentation begins with the packaging.</h2>
           <div className="story-chapters">
             {storyChapters.map((chapter, index) => {
-              const Frame = frames[chapter.art]
               return (
                 <article
                   className={`story-chapter${index === 0 ? ' is-active' : ''}`}
                   key={chapter.number}
                 >
                   <figure className="chapter-figure">
-                    <Frame />
-                    <figcaption className="sr-only">{chapter.label}</figcaption>
+                    <img
+                      src={chapter.image}
+                      alt={chapter.label}
+                      width={chapter.width}
+                      height={chapter.height}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                    />
                   </figure>
                   <div className="chapter-copy">
                     <p className="chapter-no">{chapter.number}</p>
